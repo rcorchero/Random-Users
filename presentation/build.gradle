@@ -1,0 +1,36 @@
+plugins {
+    id 'kotlin'
+    id 'kotlin-kapt'
+}
+
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+}
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
+    }
+}
+
+def commonDependencies = rootProject.ext.commonDependencies
+def presentationDependencies = rootProject.ext.presentationDependencies
+
+dependencies {
+    implementation project(':domain')
+
+    // Coroutines
+    implementation presentationDependencies.kotlinCoroutines
+    implementation presentationDependencies.kotlinCoroutinesAndroid
+
+    // Arrow
+    implementation commonDependencies.arrowCore
+    implementation commonDependencies.arrowSyntax
+    kapt commonDependencies.arrowMeta
+
+    // Testing
+    testImplementation commonDependencies.junit
+    testImplementation commonDependencies.mockK
+    testImplementation commonDependencies.coroutinesTest
+}

@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Random Users</string>
+
+    <string name="dashboard_title">Random Users</string>
+
+    <string name="detail_title">User Details</string>
+    <string name="detail_user_email">Email:</string>
+    <string name="detail_user_address">Address:</string>
+    <string name="detail_user_phone">Phone:</string>
+    <string name="detail_user_website">Website:</string>
+    <string name="detail_user_company">Company:</string>
+
+    <string name="error_screen_title">An error has occurred. Try again later.</string>
+    <string name="error_screen_button_reload">Reload</string>
+
+    <string name="intent_error_dialer">There is no phone dialer installed</string>
+    <string name="intent_error_email">There is no email client installed</string>
+    <string name="intent_error_geo">There is no maps client installed</string>
+</resources>

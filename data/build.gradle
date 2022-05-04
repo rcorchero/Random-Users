@@ -1,0 +1,69 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+}
+
+def commonDependencies = rootProject.ext.commonDependencies
+def dataDependencies = rootProject.ext.dataDependencies
+
+android {
+    compileSdk rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        minSdk rootProject.ext.minSdkVersion
+        targetSdk rootProject.ext.targetSdkVersion
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+
+        debug {
+            minifyEnabled false
+            debuggable true
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation project(':domain')
+
+    // Moshi
+    implementation dataDependencies.moshiKotlin
+    kapt dataDependencies.moshiCodegen
+    implementation dataDependencies.retrofitMoshiConverter
+
+    // Retrofit
+    implementation dataDependencies.retrofit
+
+    // Arrow
+    implementation commonDependencies.arrowCore
+    implementation commonDependencies.arrowSyntax
+    kapt commonDependencies.arrowMeta
+
+    // Testing
+    testImplementation commonDependencies.junit
+    testImplementation commonDependencies.mockK
+    testImplementation commonDependencies.coroutinesTest
+    testImplementation dataDependencies.mockWebServer
+}

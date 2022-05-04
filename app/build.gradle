@@ -1,0 +1,105 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+}
+
+def appDependencies = rootProject.ext.appDependencies
+def dataDependencies = rootProject.ext.dataDependencies
+def presentationDependencies = rootProject.ext.presentationDependencies
+
+android {
+
+    compileSdk rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        applicationId "com.rcorchero.randomusers"
+
+        minSdk rootProject.ext.minSdkVersion
+        targetSdk rootProject.ext.targetSdkVersion
+
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix ".debug"
+            minifyEnabled false
+            debuggable true
+        }
+    }
+
+    sourceSets{
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion composeVersion
+    }
+}
+
+dependencies {
+    implementation project(':data')
+    implementation project(':domain')
+    implementation project(':presentation')
+
+    // DI - Common
+    implementation appDependencies.dagger
+    kapt appDependencies.daggerCompiler
+    implementation appDependencies.daggerAndroid
+    implementation appDependencies.daggerAndroidSupport
+    kapt appDependencies.daggerAndroidProcessor
+
+    // DI - Coroutines
+    implementation presentationDependencies.kotlinCoroutines
+    implementation presentationDependencies.kotlinCoroutinesAndroid
+
+    // DI - Retrofit
+    implementation dataDependencies.retrofit
+    implementation dataDependencies.retrofitMoshiConverter
+    implementation dataDependencies.okhttpLoggingInterceptor
+
+    // UI
+    implementation appDependencies.coreKtx
+    implementation appDependencies.composeUi
+    implementation appDependencies.composeMaterial
+    implementation appDependencies.composeUiToolingPreview
+    implementation appDependencies.lifecycle
+    implementation appDependencies.activityCompose
+    testImplementation commonDependencies.junit
+    androidTestImplementation commonDependencies.extJunit
+    androidTestImplementation appDependencies.uiTestJunit
+    debugImplementation appDependencies.composeUiTooling
+}

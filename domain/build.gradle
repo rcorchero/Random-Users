@@ -1,0 +1,30 @@
+plugins {
+    id 'kotlin'
+    id 'kotlin-kapt'
+}
+
+sourceSets{
+    main.java.srcDirs += 'src/main/kotlin'
+}
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+}
+
+def commonDependencies = rootProject.ext.commonDependencies
+
+dependencies {
+    implementation commonDependencies.javaxInject
+
+    // Arrow
+    implementation commonDependencies.arrowCore
+    implementation commonDependencies.arrowSyntax
+    kapt commonDependencies.arrowMeta
+
+    // Testing
+    testImplementation commonDependencies.junit
+    testImplementation commonDependencies.mockK
+    testImplementation commonDependencies.coroutinesTest
+}
